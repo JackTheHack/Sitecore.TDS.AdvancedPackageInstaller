@@ -21,7 +21,7 @@ Console Application paramters:
 
 #### Usage Example:
 
-'''Tools\PackageInstaller.exe -p 'TDS.PackageName.update' -u 'http://localhost' -f 'C:\inetpub\Sitecore\Website' -v 'true''''
+Tools\PackageInstaller.exe -p 'TDS.PackageName.update' -u 'http://localhost' -f 'C:\inetpub\Sitecore\Website' -v 'true'
 
 
 ## Powershell scripts
@@ -33,8 +33,7 @@ Along with the console application Powershell scripts are provided
 Performs batch package installation from provided update package list (updatelist.txt by default).
 
 #### Usage example:
-
-'''installpackages.ps1 -siteUrl "http://localhost" -siteDir "C:\inetpub\Sitecore\Website\"'''
+installpackages.ps1 -siteUrl "http://localhost" -siteDir "C:\inetpub\Sitecore\Website\"
 
 ### Sitecore_Modules.ps1
 
