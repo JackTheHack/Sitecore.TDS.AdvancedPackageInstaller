@@ -39,9 +39,9 @@ installpackages.ps1 -siteUrl "http://localhost" -siteDir "C:\inetpub\Sitecore\We
 
 Contains the list of useful Powershell functions to automate the package installation.
 
-**installPackage** - installs package using the command line tool using specified paramters
-**replaceConfigs** - goes through the website root and replaces web.config and App_Config/*.config with it's new versions, that were installed from the package.
-**cleanConfigs** - searches the App_Config directory and deletes all configs that were not replaced by the previous TDS package installation
-**pingSitecore** - performs requests to Sitecore instance to check if it's back from recycle
+- **installPackage** - installs package using the command line tool using specified paramters
+- **replaceConfigs** - goes through the website root and replaces web.config and App_Config/*.config with it's new versions, that were installed from the package.
+- **cleanConfigs** - searches the App_Config directory and deletes all configs that were not replaced by the previous TDS package installation
+- **pingSitecore** - performs requests to Sitecore instance to check if it's back from recycle
 
 The example of this module usage can be found in installpackages.ps1. 
