@@ -7,7 +7,9 @@ This is an improved version of the https://github.com/HedgehogDevelopment/Update
 The improved version includes:
 
 - Console feedback with the installation progress
+- Avoiding the recycling and timeouts by checking if service DLLs are already deployed
 - Powershell scripts for easy automation
+- Updated Sitecore.Update.dll references to latest version (8.1)
 
 ## Usage
 
