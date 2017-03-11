@@ -33,24 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Sitecore.Kernel">
-      <HintPath>..\..\packages\Sitecore.Kernel.8.1.0.160302\lib\Sitecore.Kernel.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Sitecore.Logging">
-      <HintPath>..\..\packages\Sitecore.Logging.8.1.0.160302\lib\Sitecore.Logging.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Sitecore.Logging.Client">
-      <HintPath>..\..\packages\Sitecore.Logging.Client.8.1.0.160302\lib\Sitecore.Logging.Client.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Sitecore.NVelocity">
-      <HintPath>..\..\packages\Sitecore.NVelocity.8.1.0.160302\lib\Sitecore.NVelocity.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Sitecore.Zip">
-      <HintPath>..\..\packages\Sitecore.Zip.8.1.0.160302\lib\Sitecore.Zip.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\packages\Sitecore.Kernel.8.1.160302\lib\NET45\Sitecore.Kernel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
