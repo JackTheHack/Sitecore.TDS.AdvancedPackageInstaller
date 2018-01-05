@@ -134,7 +134,7 @@ namespace HedgehogDevelopment.SitecoreProject.PackageInstallPostProcessor
                 return;
             }
             Dictionary<Guid, DoPostDeployActions.DeployedItemInfo> dictionary = this.BuildDeploymentItems(deployedItemsXml);
-            using (new ProxyDisabler())
+            //using (new ProxyDisabler())
             {
                 foreach (DoPostDeployActions.DeployedItemInfo current in dictionary.Values)
                 {
@@ -280,7 +280,7 @@ namespace HedgehogDevelopment.SitecoreProject.PackageInstallPostProcessor
 						});
                         break;
                     }
-                    using (new ProxyDisabler())
+                    //using (new ProxyDisabler())
                     {
                         using (new SecurityDisabler())
                         {
@@ -355,7 +355,7 @@ namespace HedgehogDevelopment.SitecoreProject.PackageInstallPostProcessor
 						});
                         break;
                     }
-                    using (new ProxyDisabler())
+                    //using (new ProxyDisabler())
                     {
                         using (new SecurityDisabler())
                         {

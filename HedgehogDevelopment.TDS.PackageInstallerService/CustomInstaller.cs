@@ -46,7 +46,7 @@ namespace HedgehogDevelopment.TDS.PackageInstallerService
 
             using (new SecurityDisabler())
             using (new BulkUpdateContext())
-            using (new ProxyDisabler())
+            //using (new ProxyDisabler())
             using (new DictionaryBatchOperationContext(false))
             using (new SyncOperationContext())
             {
