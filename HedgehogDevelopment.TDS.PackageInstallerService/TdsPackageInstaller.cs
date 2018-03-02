@@ -17,6 +17,8 @@ using Sitecore.IO;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Hubs;
 using Sitecore.Diagnostics;
+using System.Web.Services.Protocols;
+using System.Web;
 
 namespace HedgehogDevelopment.TDS.PackageInstallerService
 {
@@ -25,15 +27,25 @@ namespace HedgehogDevelopment.TDS.PackageInstallerService
     [ToolboxItem(false)]
     public class TdsPackageInstaller
     {
+        public UserCredentials Credentials { get; set; }
+        
+        public class UserCredentials : SoapHeader
+        {
+            public string userid;
+            public string password;
+        }
 
         /// <summary>
         /// Installs a Sitecore Update Package.
         /// </summary>
         /// <param name="path">A path to a package that is reachable by the web server</param>
         [WebMethod(Description = "Installs a Sitecore Update Package.")]
+        [SoapHeader("Credentials")]
         public InstallationSummary InstallPackage(string path)
         {
-            using (var hubConnection = new HubConnection("http://127.0.0.1:9422"))                
+            if (!Authenticate()) return null;
+
+            using (var hubConnection = new HubConnection("http://127.0.0.1:9422"))
             {
                 var hubProxy = hubConnection.CreateHubProxy("InstallerHub");
 
@@ -49,36 +61,75 @@ namespace HedgehogDevelopment.TDS.PackageInstallerService
                     Log.Info("[SignalR] Failed to establish the connection", this);
                 }
 
-                // Use default logger with SignalR logging
-                ILog log = new CustomLogger(LogManager.GetLogger("root"), hubProxy);
-
-                XmlConfigurator.Configure((XmlElement) ConfigurationManager.GetSection("log4net"));
-
-                CustomInstaller installer = new CustomInstaller(UpgradeAction.Upgrade);
-
-                MetadataView view = UpdateHelper.LoadMetadata(path);
-
-                //Get the package entries
-                bool hasPostAction;
-                string historyPath;
-                List<ContingencyEntry> entries = installer.DoInstallPackage(path, InstallMode.Install, log,
-                    out hasPostAction, out historyPath);
-
-                installer.ExecutePostInstallationInstructions(path, historyPath, InstallMode.Install, view, log,
-                    ref entries);
-
-                SaveInstallationMessages(entries, historyPath);
-
-                return new InstallationSummary()
-                {
-                    Warnings = entries.Count(i => i.Level == ContingencyLevel.Warning),
-                    Collisions = entries.Count(i => i.Level == ContingencyLevel.Collision),
-                    Errors = entries.Count(i => i.Level == ContingencyLevel.Error),
-                    Entries = entries.Select(i => new InstallationEntry(i)).ToList()
-                };
+                return DoInstallPackage(path, hubProxy);
             }
-        }       
+        }
 
+
+        /// <summary>
+        /// Installs a Sitecore Update Package.
+        /// </summary>
+        /// <param name="path">A path to a package that is reachable by the web server</param>
+        [WebMethod(Description = "Installs a Sitecore Update Package.")]
+        [SoapHeader("Credentials")]
+        public InstallationSummary InstallPackageSilently(string path)
+        {
+            var azureSitePath = Environment.GetEnvironmentVariable("WEBROOT_PATH");
+            string appRoot = HttpContext.Current.Server.MapPath("~");
+
+            if (!string.IsNullOrEmpty(appRoot))
+            {
+                path = appRoot + path;
+            }
+
+            if (!Authenticate())return null;
+
+            return DoInstallPackage(path, null);
+        }
+
+        private bool Authenticate()
+        {
+            if(!string.IsNullOrEmpty(ConfigurationManager.AppSettings["TDSConnector.Username"]))
+            {
+                var username = ConfigurationManager.AppSettings["TDSConnector.Username"];
+                var password = ConfigurationManager.AppSettings["TDSConnector.Password"];
+                var base64 = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", username, password)));
+                return true;
+            }
+
+            return true;
+        }
+
+        private InstallationSummary DoInstallPackage(string path, IHubProxy hubProxy)
+        {
+            // Use default logger with SignalR logging
+            ILog log = new CustomLogger(LogManager.GetLogger("root"), hubProxy);
+
+            XmlConfigurator.Configure((XmlElement)ConfigurationManager.GetSection("log4net"));
+
+            CustomInstaller installer = new CustomInstaller(UpgradeAction.Upgrade);
+
+            MetadataView view = UpdateHelper.LoadMetadata(path);
+
+            //Get the package entries
+            bool hasPostAction;
+            string historyPath;
+            List<ContingencyEntry> entries = installer.DoInstallPackage(path, InstallMode.Install, log,
+                out hasPostAction, out historyPath);
+
+            installer.ExecutePostInstallationInstructions(path, historyPath, InstallMode.Install, view, log,
+                ref entries);
+
+            SaveInstallationMessages(entries, historyPath);
+
+            return new InstallationSummary()
+            {
+                Warnings = entries.Count(i => i.Level == ContingencyLevel.Warning),
+                Collisions = entries.Count(i => i.Level == ContingencyLevel.Collision),
+                Errors = entries.Count(i => i.Level == ContingencyLevel.Error),
+                Entries = entries.Select(i => new InstallationEntry(i)).ToList()
+            };
+        }
 
         private void SaveInstallationMessages(List<ContingencyEntry> entries, string historyPath)
         {

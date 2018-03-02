@@ -23,13 +23,17 @@ namespace HedgehogDevelopment.PackageInstaller.TdsPackageInstaller {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="TdsPackageInstallerSoap", Namespace="http://hhogdev.com/")]
     public partial class TdsPackageInstaller : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
+        private UserCredentials userCredentialsValueField;
+        
         private System.Threading.SendOrPostCallback InstallPackageOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback InstallPackageSilentlyOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -42,6 +46,15 @@ namespace HedgehogDevelopment.PackageInstaller.TdsPackageInstaller {
             }
             else {
                 this.useDefaultCredentialsSetExplicitly = true;
+            }
+        }
+        
+        public UserCredentials UserCredentialsValue {
+            get {
+                return this.userCredentialsValueField;
+            }
+            set {
+                this.userCredentialsValueField = value;
             }
         }
         
@@ -73,6 +86,10 @@ namespace HedgehogDevelopment.PackageInstaller.TdsPackageInstaller {
         public event InstallPackageCompletedEventHandler InstallPackageCompleted;
         
         /// <remarks/>
+        public event InstallPackageSilentlyCompletedEventHandler InstallPackageSilentlyCompleted;
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapHeaderAttribute("UserCredentialsValue")]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://hhogdev.com/InstallPackage", RequestNamespace="http://hhogdev.com/", ResponseNamespace="http://hhogdev.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public InstallationSummary InstallPackage(string path) {
             object[] results = this.Invoke("InstallPackage", new object[] {
@@ -102,6 +119,36 @@ namespace HedgehogDevelopment.PackageInstaller.TdsPackageInstaller {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapHeaderAttribute("UserCredentialsValue")]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://hhogdev.com/InstallPackageSilently", RequestNamespace="http://hhogdev.com/", ResponseNamespace="http://hhogdev.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public InstallationSummary InstallPackageSilently(string path) {
+            object[] results = this.Invoke("InstallPackageSilently", new object[] {
+                        path});
+            return ((InstallationSummary)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void InstallPackageSilentlyAsync(string path) {
+            this.InstallPackageSilentlyAsync(path, null);
+        }
+        
+        /// <remarks/>
+        public void InstallPackageSilentlyAsync(string path, object userState) {
+            if ((this.InstallPackageSilentlyOperationCompleted == null)) {
+                this.InstallPackageSilentlyOperationCompleted = new System.Threading.SendOrPostCallback(this.OnInstallPackageSilentlyOperationCompleted);
+            }
+            this.InvokeAsync("InstallPackageSilently", new object[] {
+                        path}, this.InstallPackageSilentlyOperationCompleted, userState);
+        }
+        
+        private void OnInstallPackageSilentlyOperationCompleted(object arg) {
+            if ((this.InstallPackageSilentlyCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.InstallPackageSilentlyCompleted(this, new InstallPackageSilentlyCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         public new void CancelAsync(object userState) {
             base.CancelAsync(userState);
         }
@@ -117,6 +164,98 @@ namespace HedgehogDevelopment.PackageInstaller.TdsPackageInstaller {
                 return true;
             }
             return false;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hhogdev.com/")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="http://hhogdev.com/", IsNullable=false)]
+    public partial class UserCredentials : System.Web.Services.Protocols.SoapHeader {
+        
+        private string useridField;
+        
+        private string passwordField;
+        
+        private System.Xml.XmlAttribute[] anyAttrField;
+        
+        /// <remarks/>
+        public string userid {
+            get {
+                return this.useridField;
+            }
+            set {
+                this.useridField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string password {
+            get {
+                return this.passwordField;
+            }
+            set {
+                this.passwordField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAnyAttributeAttribute()]
+        public System.Xml.XmlAttribute[] AnyAttr {
+            get {
+                return this.anyAttrField;
+            }
+            set {
+                this.anyAttrField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hhogdev.com/")]
+    public partial class InstallationEntry {
+        
+        private string actionField;
+        
+        private string levelField;
+        
+        private string messageField;
+        
+        /// <remarks/>
+        public string Action {
+            get {
+                return this.actionField;
+            }
+            set {
+                this.actionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Level {
+            get {
+                return this.levelField;
+            }
+            set {
+                this.levelField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Message {
+            get {
+                return this.messageField;
+            }
+            set {
+                this.messageField = value;
+            }
         }
     }
     
@@ -178,56 +317,11 @@ namespace HedgehogDevelopment.PackageInstaller.TdsPackageInstaller {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://hhogdev.com/")]
-    public partial class InstallationEntry {
-        
-        private string actionField;
-        
-        private string levelField;
-        
-        private string messageField;
-        
-        /// <remarks/>
-        public string Action {
-            get {
-                return this.actionField;
-            }
-            set {
-                this.actionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Level {
-            get {
-                return this.levelField;
-            }
-            set {
-                this.levelField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Message {
-            get {
-                return this.messageField;
-            }
-            set {
-                this.messageField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void InstallPackageCompletedEventHandler(object sender, InstallPackageCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class InstallPackageCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -235,6 +329,32 @@ namespace HedgehogDevelopment.PackageInstaller.TdsPackageInstaller {
         private object[] results;
         
         internal InstallPackageCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public InstallationSummary Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((InstallationSummary)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void InstallPackageSilentlyCompletedEventHandler(object sender, InstallPackageSilentlyCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class InstallPackageSilentlyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal InstallPackageSilentlyCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }

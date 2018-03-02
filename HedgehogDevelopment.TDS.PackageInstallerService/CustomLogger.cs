@@ -20,13 +20,16 @@ namespace HedgehogDevelopment.TDS.PackageInstallerService
 
         private void SendLog(object message, string level)
         {
-            try
+            if (_proxy != null)
             {
-                _proxy.Invoke("Send", message, level);
-            }
-            catch (Exception e)
-            {
-                // ignored
+                try
+                {
+                    _proxy.Invoke("Send", message, level);
+                }
+                catch (Exception e)
+                {
+                    // ignored
+                }
             }
         }
 
